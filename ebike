@@ -1,0 +1,108 @@
+#include <iostream>
+#include <cmath>
+#include <algorithm>
+#include <cstdlib>
+#include <ctime>
+
+using namespace std;
+
+double x_utente;
+double y_utente;
+
+struct ebike {
+    int id;
+    double x;
+    double y;
+    bool disponibile;
+    double autonomia;
+};
+
+double distanza(ebike bike) {
+    return sqrt(pow(bike.x - x_utente, 2) + pow(bike.y - y_utente, 2));
+}
+
+bool confronta(ebike bike1, ebike bike2) {
+    return distanza(bike1) < distanza(bike2);
+}
+
+int main() {
+    srand(time(0));
+
+    cout << "Inserisci la tua coordinata X attuale: ";
+    cin >> x_utente;
+    cout << "Inserisci la tua coordinata Y attuale: ";
+    cin >> y_utente;
+    cout << endl;
+
+    ebike array_bici[3];
+    array_bici[0] = {1, 2.5, 3.8, true, 24.3};
+    array_bici[1] = {2, 7.1, 4.9, false, 15.0};
+    array_bici[2] = {3, 5.0, 6.2, true, 40.5};
+    
+    sort(array_bici, array_bici + 3, confronta);
+    
+    cout << "--- Elenco E-Bike disponibili piu' vicine ---" << endl;
+    for (int i = 0; i < 3; i++) {
+        if (array_bici[i].disponibile) {
+            cout << "Bici ID: " << array_bici[i].id 
+                 << " | Posizione: (" << array_bici[i].x << ", " << array_bici[i].y << ")"
+                 << " | Distanza: " << distanza(array_bici[i]) << " km" 
+                 << " | Autonomia: " << array_bici[i].autonomia << " km" << endl;
+        }
+    }
+    cout << "---------------------------------------------" << endl << endl;
+
+    int indice_scelto = -1;
+    for (int i = 0; i < 3; i++) {
+        if (array_bici[i].disponibile) {
+            indice_scelto = i;
+            break;
+        }
+    }
+
+    if (indice_scelto == -1) {
+        cout << "Nessuna e-bike disponibile al momento." << endl;
+        return 0;
+    }
+
+    ebike &bike_scelta = array_bici[indice_scelto];
+    
+    double tempo;
+    double km_percorsi;
+    double velocita = 20.0;
+    int ritardo;
+    double costo = 0.20;
+
+    cout << "Hai selezionato la bici piu' vicina con ID: " << bike_scelta.id << endl;
+    cout << "Quanti km devi percorrere? ";
+    cin >> km_percorsi;
+
+    if (km_percorsi > bike_scelta.autonomia) {
+        cout << "Errore: i km inseriti superano l'autonomia residua del mezzo (" 
+             << bike_scelta.autonomia << " km)!" << endl;
+        return 0;
+    }
+
+    ritardo = rand() % 15 + 1;
+    cout << "Previsione ritardo: " << ritardo << " minuti." << endl;
+
+    tempo = ((km_percorsi / velocita) * 60) + ritardo;
+    double importo = tempo * costo;
+    
+    bike_scelta.autonomia = bike_scelta.autonomia - km_percorsi;
+    bike_scelta.disponibile = true;
+
+    cout << "\n--- Riepilogo Servizio ---" << endl;
+    cout << "Tempo stimato totale: " << tempo << " minuti" << endl;
+    cout << "Km percorsi: " << km_percorsi << " km" << endl;
+    cout << "Costo finale del servizio: " << importo << " euro" << endl;
+    cout << "Autonomia residua aggiornata: " << bike_scelta.autonomia << " km" << endl;
+    cout << "Stato bici : Di nuovo disponibile" << endl;
+    cout << "--------------------------" << endl;
+    cout << "Grazie per aver utilizzato il nostro servizio!" << endl;
+
+    return 0;
+}
+
+
+
