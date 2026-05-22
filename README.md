@@ -1,2 +1,2 @@
 # Progetto-servizio-di-noleggio-di-ebike-in-c++
-Progetto sciluppato in c++ di un'applicazione di un servizio di noleggio di ebike, si è liberi di usare il codice a piacimento per tutti i campi tranne per scopi lucrativi o di guadagno.
+Progetto sciluppato in c++ di un'applicazione di un servizio di noleggio di ebike, sfrutta uno struct per semplificare le variabili della ebike e utilizza variabili globali per salvare la posizione dell'utente sulla mappa. Il programma usa le formule matematiche per calcolare la distanza reale tra l'utente e i mezzi, ordina l'array dal più vicino al più lontano con la funzione sort e simula un noleggio completo calcolando tempo, ritardo casuale e costo finale del servizio.
